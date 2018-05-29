@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Product App</title>
+</head>
+<body>
+    type url:<br>
+    http://localhost/WebApplication/api/sound/play/0  - first usb<br>
+    http://localhost/WebApplication/api/sound/play/1 - second usb<br>
+    http://localhost/WebApplication/api/sound/play/2 - computer <br>
+    http://localhost/WebApplication/api/sound/stop
+
+        <div>
+            <h2>All tracks</h2>
+            <ul id="tracks" />
+        </div>
+        <div>
+            <h2>Search by ID</h2>
+            <input type="text" id="prodId" size="5" />
+            <input type="button" value="Search" onclick="find();" />
+            <p id="product" />
+        </div>
+
+        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+        <script>
+            var uri = 'api/sound/';
+
+            $(document).ready(function () {
+                // Send an AJAX request
+                alert('Привет, Мир!');
+            });
+
+            function formatItem(item) {
+                return item.Id + ': $' + item.Name;
+                alert('Привет!');
+            }
+
+            function find() {
+                var id = $('#trackId').val();
+                $.getJSON(uri + '/' + id)
+                    .done(function (data) {
+
+                        alert('Мир!');
+                        $('#track').text(formatItem(data));
+                    })
+                    .fail(function (jqXHR, textStatus, err) {
+                        $('#track').text('Error: ' + err);
+                    });
+            }
+        </script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\obj\Debug\WebApplication.csproj.CoreCompileInputs.cache
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\ApplicationInsights.config
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\WebApplication.dll.config
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\WebApplication.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\WebApplication.pdb
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\csc.exe
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\csc.exe.config
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\csc.rsp
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\csi.exe
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\csi.exe.config
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\csi.rsp
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\Microsoft.Win32.Primitives.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\System.AppContext.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\System.Collections.Immutable.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\System.Console.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\System.Diagnostics.FileVersionInfo.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\System.Diagnostics.Process.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\System.Diagnostics.StackTrace.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\System.IO.Compression.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\System.IO.FileSystem.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\System.IO.FileSystem.DriveInfo.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\System.IO.FileSystem.Primitives.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\System.IO.Pipes.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\System.Reflection.Metadata.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\System.Security.AccessControl.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\System.Security.Claims.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\System.Security.Cryptography.Algorithms.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\System.Security.Cryptography.Encoding.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\System.Security.Cryptography.Primitives.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\System.Security.Cryptography.X509Certificates.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\System.Security.Principal.Windows.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\System.Text.Encoding.CodePages.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\System.Threading.Thread.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\System.ValueTuple.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\System.Xml.ReaderWriter.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\System.Xml.XmlDocument.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\System.Xml.XPath.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\System.Xml.XPath.XDocument.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\vbc.exe
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\vbc.exe.config
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\vbc.rsp
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\VBCSCompiler.exe
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\roslyn\VBCSCompiler.exe.config
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\Antlr3.Runtime.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\Microsoft.AI.Agent.Intercept.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\Microsoft.AI.DependencyCollector.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\Microsoft.AI.PerfCounterCollector.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\Microsoft.AI.ServerTelemetryChannel.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\Microsoft.AI.Web.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\Microsoft.AI.WindowsServer.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\Microsoft.ApplicationInsights.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\Microsoft.Web.Infrastructure.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\NAudio.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\Newtonsoft.Json.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\System.Net.Http.Formatting.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\System.Web.Helpers.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\System.Web.Http.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\System.Web.Http.WebHost.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\System.Web.Mvc.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\System.Web.Optimization.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\System.Web.Razor.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\System.Web.WebPages.Deployment.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\System.Web.WebPages.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\System.Web.WebPages.Razor.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\WebGrease.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\NAudio.xml
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\Newtonsoft.Json.xml
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\System.Net.Http.Formatting.xml
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\System.Web.Helpers.xml
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\System.Web.Http.xml
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\System.Web.Http.WebHost.xml
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\System.Web.Mvc.xml
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\System.Web.Optimization.xml
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\System.Web.Razor.xml
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\System.Web.WebPages.xml
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\System.Web.WebPages.Deployment.xml
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\System.Web.WebPages.Razor.xml
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\Antlr3.Runtime.pdb
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\Microsoft.ApplicationInsights.xml
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\Microsoft.AI.DependencyCollector.xml
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\Microsoft.AI.ServerTelemetryChannel.xml
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\Microsoft.AI.WindowsServer.xml
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\Microsoft.AI.Web.xml
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\ru\System.Net.Http.Formatting.resources.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\ru\System.Web.Helpers.resources.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\ru\System.Web.Http.resources.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\ru\System.Web.Http.WebHost.resources.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\ru\System.Web.Mvc.resources.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\ru\System.Web.Optimization.resources.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\ru\System.Web.Razor.resources.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\ru\System.Web.WebPages.resources.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\ru\System.Web.WebPages.Deployment.resources.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\bin\ru\System.Web.WebPages.Razor.resources.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\obj\Debug\WebApplication.csproj.CopyComplete
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\obj\Debug\WebApplication.dll
+D:\Умный дом\audio api\app2\WebApplication\WebApplication\obj\Debug\WebApplication.pdb
+D:\project\WebApplication\WebApplication\bin\ApplicationInsights.config
+D:\project\WebApplication\WebApplication\bin\WebApplication.dll.config
+D:\project\WebApplication\WebApplication\bin\WebApplication.dll
+D:\project\WebApplication\WebApplication\bin\WebApplication.pdb
+D:\project\WebApplication\WebApplication\bin\roslyn\csc.exe
+D:\project\WebApplication\WebApplication\bin\roslyn\csc.exe.config
+D:\project\WebApplication\WebApplication\bin\roslyn\csc.rsp
+D:\project\WebApplication\WebApplication\bin\roslyn\csi.exe
+D:\project\WebApplication\WebApplication\bin\roslyn\csi.exe.config
+D:\project\WebApplication\WebApplication\bin\roslyn\csi.rsp
+D:\project\WebApplication\WebApplication\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\project\WebApplication\WebApplication\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\project\WebApplication\WebApplication\bin\roslyn\Microsoft.Win32.Primitives.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\System.AppContext.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\System.Collections.Immutable.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\System.Console.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\System.Diagnostics.FileVersionInfo.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\System.Diagnostics.Process.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\System.Diagnostics.StackTrace.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\System.IO.Compression.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\System.IO.FileSystem.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\System.IO.FileSystem.DriveInfo.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\System.IO.FileSystem.Primitives.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\System.IO.Pipes.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\System.Reflection.Metadata.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\System.Security.AccessControl.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\System.Security.Claims.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\System.Security.Cryptography.Algorithms.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\System.Security.Cryptography.Encoding.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\System.Security.Cryptography.Primitives.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\System.Security.Cryptography.X509Certificates.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\System.Security.Principal.Windows.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\System.Text.Encoding.CodePages.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\System.Threading.Thread.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\System.ValueTuple.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\System.Xml.ReaderWriter.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\System.Xml.XmlDocument.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\System.Xml.XPath.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\System.Xml.XPath.XDocument.dll
+D:\project\WebApplication\WebApplication\bin\roslyn\vbc.exe
+D:\project\WebApplication\WebApplication\bin\roslyn\vbc.exe.config
+D:\project\WebApplication\WebApplication\bin\roslyn\vbc.rsp
+D:\project\WebApplication\WebApplication\bin\roslyn\VBCSCompiler.exe
+D:\project\WebApplication\WebApplication\bin\roslyn\VBCSCompiler.exe.config
+D:\project\WebApplication\WebApplication\bin\Antlr3.Runtime.dll
+D:\project\WebApplication\WebApplication\bin\Microsoft.AI.Agent.Intercept.dll
+D:\project\WebApplication\WebApplication\bin\Microsoft.AI.DependencyCollector.dll
+D:\project\WebApplication\WebApplication\bin\Microsoft.AI.PerfCounterCollector.dll
+D:\project\WebApplication\WebApplication\bin\Microsoft.AI.ServerTelemetryChannel.dll
+D:\project\WebApplication\WebApplication\bin\Microsoft.AI.Web.dll
+D:\project\WebApplication\WebApplication\bin\Microsoft.AI.WindowsServer.dll
+D:\project\WebApplication\WebApplication\bin\Microsoft.ApplicationInsights.dll
+D:\project\WebApplication\WebApplication\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\project\WebApplication\WebApplication\bin\Microsoft.Web.Infrastructure.dll
+D:\project\WebApplication\WebApplication\bin\NAudio.dll
+D:\project\WebApplication\WebApplication\bin\Newtonsoft.Json.dll
+D:\project\WebApplication\WebApplication\bin\System.Net.Http.Formatting.dll
+D:\project\WebApplication\WebApplication\bin\System.Web.Helpers.dll
+D:\project\WebApplication\WebApplication\bin\System.Web.Http.dll
+D:\project\WebApplication\WebApplication\bin\System.Web.Http.WebHost.dll
+D:\project\WebApplication\WebApplication\bin\System.Web.Mvc.dll
+D:\project\WebApplication\WebApplication\bin\System.Web.Optimization.dll
+D:\project\WebApplication\WebApplication\bin\System.Web.Razor.dll
+D:\project\WebApplication\WebApplication\bin\System.Web.WebPages.Deployment.dll
+D:\project\WebApplication\WebApplication\bin\System.Web.WebPages.dll
+D:\project\WebApplication\WebApplication\bin\System.Web.WebPages.Razor.dll
+D:\project\WebApplication\WebApplication\bin\WebGrease.dll
+D:\project\WebApplication\WebApplication\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\project\WebApplication\WebApplication\bin\NAudio.xml
+D:\project\WebApplication\WebApplication\bin\Newtonsoft.Json.xml
+D:\project\WebApplication\WebApplication\bin\System.Net.Http.Formatting.xml
+D:\project\WebApplication\WebApplication\bin\System.Web.Helpers.xml
+D:\project\WebApplication\WebApplication\bin\System.Web.Http.xml
+D:\project\WebApplication\WebApplication\bin\System.Web.Http.WebHost.xml
+D:\project\WebApplication\WebApplication\bin\System.Web.Mvc.xml
+D:\project\WebApplication\WebApplication\bin\System.Web.Optimization.xml
+D:\project\WebApplication\WebApplication\bin\System.Web.Razor.xml
+D:\project\WebApplication\WebApplication\bin\System.Web.WebPages.xml
+D:\project\WebApplication\WebApplication\bin\System.Web.WebPages.Deployment.xml
+D:\project\WebApplication\WebApplication\bin\System.Web.WebPages.Razor.xml
+D:\project\WebApplication\WebApplication\bin\Antlr3.Runtime.pdb
+D:\project\WebApplication\WebApplication\bin\Microsoft.ApplicationInsights.xml
+D:\project\WebApplication\WebApplication\bin\Microsoft.AI.DependencyCollector.xml
+D:\project\WebApplication\WebApplication\bin\Microsoft.AI.ServerTelemetryChannel.xml
+D:\project\WebApplication\WebApplication\bin\Microsoft.AI.WindowsServer.xml
+D:\project\WebApplication\WebApplication\bin\Microsoft.AI.Web.xml
+D:\project\WebApplication\WebApplication\bin\ru\System.Net.Http.Formatting.resources.dll
+D:\project\WebApplication\WebApplication\bin\ru\System.Web.Helpers.resources.dll
+D:\project\WebApplication\WebApplication\bin\ru\System.Web.Http.resources.dll
+D:\project\WebApplication\WebApplication\bin\ru\System.Web.Http.WebHost.resources.dll
+D:\project\WebApplication\WebApplication\bin\ru\System.Web.Mvc.resources.dll
+D:\project\WebApplication\WebApplication\bin\ru\System.Web.Optimization.resources.dll
+D:\project\WebApplication\WebApplication\bin\ru\System.Web.Razor.resources.dll
+D:\project\WebApplication\WebApplication\bin\ru\System.Web.WebPages.resources.dll
+D:\project\WebApplication\WebApplication\bin\ru\System.Web.WebPages.Deployment.resources.dll
+D:\project\WebApplication\WebApplication\bin\ru\System.Web.WebPages.Razor.resources.dll
+D:\project\WebApplication\WebApplication\obj\Debug\WebApplication.csproj.CoreCompileInputs.cache
+D:\project\WebApplication\WebApplication\obj\Debug\WebApplication.csproj.CopyComplete
+D:\project\WebApplication\WebApplication\obj\Debug\WebApplication.dll
+D:\project\WebApplication\WebApplication\obj\Debug\WebApplication.pdb
