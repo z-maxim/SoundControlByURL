@@ -25,9 +25,9 @@ namespace WebApplication.Controllers
 
 
         [HttpGet]
-        public void Play(int id)
+        public void Play(int id, int trackid)
         {
-            var t = new Thread(() => StartPlay(id));
+            var t = new Thread(() => StartPlay(id, trackid));
             t.Start();
         }
 
@@ -51,25 +51,42 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Track> Get()
+        public IEnumerable<Track> GetAllTracks()
         {
             Catalog();
             return tracks;
         }
 
+        public IHttpActionResult GetTrack(int id)
+        {
+            Catalog();
+            var track = tracks.FirstOrDefault((p) => p.Id == id);
+            if (track == null)
+            {
+                return NotFound();
+            }
+            else {
+            return Ok(track);
+            }
+            
+
+        }
+
         [HttpGet]
-        private void StartPlay(int location)
+        private void StartPlay(int location, int trackid)
         {
 
-            //  if (waveOut == null)
-            // {
+            if (waveOut != null)
+            {
+                waveOut.Dispose();
+            }
             Catalog();
             waveOut = new WaveOutEvent();
             waveOut.DeviceNumber = location;
-            int r = rnd.Next(list.Count);
-            var mp3Reader = new Mp3FileReader(list[r]);
+            //int r = rnd.Next(list.Count);
+            var mp3Reader = new Mp3FileReader(list[trackid-1]);
             waveOut.Init(mp3Reader);
-            //   }
+            // }
             waveOut.Play();
         }
 

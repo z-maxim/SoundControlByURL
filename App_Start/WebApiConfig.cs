@@ -17,8 +17,11 @@ namespace WebApplication
 
             config.Routes.MapHttpRoute(
                 name: "SoundApi",
-                routeTemplate: "api/{controller}/{action}/{id}",
-                defaults: new { controller = "sound", action = "play", id = UrlParameter.Optional }
+                routeTemplate: "api/{controller}/{action}/{id}/{trackid}",
+                defaults: new { controller = "sound",
+                                action = "play",
+                                id = UrlParameter.Optional,
+                                trackid = UrlParameter.Optional }
             );
         }
     }
