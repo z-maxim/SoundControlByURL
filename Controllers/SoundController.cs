@@ -16,33 +16,56 @@ namespace WebApplication.Controllers
 {
     public class SoundController : ApiController
     {
-
-        private static WaveOutEvent waveOut;
+        public static WaveOutEvent waveOut1, waveOut2;
         public List<string> list;
         public List<Track> tracks = new List<Track>();
         private static Random rnd = new Random();
-        private string path = ConfigurationManager.AppSettings.Get("Path");
+        private string path; //Директория со звуковыми файлами
 
 
         [HttpGet]
         public void Play(int id, int trackid)
         {
-            var t = new Thread(() => StartPlay(id, trackid));
-            t.Start();
+            //waveOut1 = new WaveOutEvent();
+            //waveOut2 = new WaveOutEvent();
+            var t1 = new Thread(() => StartPlay1(0, trackid));
+            var t2 = new Thread(() => StartPlay2(1, trackid));
+            t1.Start();
+            t2.Start();
         }
+
+        //[HttpGet]
+        //public void Stop(int id)
+        //{
+        //    if (waveOut[id] != null && waveOut[id].PlaybackState == PlaybackState.Playing)
+        //    {
+        //        waveOut[id].Stop();
+        //    }
+
+
+        //}
 
         [HttpGet]
         public void Stop()
         {
-            if (waveOut != null && waveOut.PlaybackState == PlaybackState.Playing)
-                waveOut.Stop();
+            //if (waveOut1 != null && waveOut1.PlaybackState == PlaybackState.Playing)
+            //{
+                waveOut1.Stop();
+                waveOut2.Stop();
+            //}
+
+
         }
 
         public void Catalog()
         {
             String[] arr;
             list = new List<String>();
-            arr = Directory.GetFiles("C:\\Media", "*.mp3");
+            //открытие файла параметризации, считывание переменных, закрытие файла
+            StreamReader strRead = new StreamReader(AppDomain.CurrentDomain.BaseDirectory+"conf.txt");
+            path = strRead.ReadLine();
+            strRead.Close();
+            arr = Directory.GetFiles(path, "*.mp3");
             for (int i = 0; i < arr.Length; i++)
             {
                 list.Add(arr[i]);
@@ -73,21 +96,37 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet]
-        private void StartPlay(int location, int trackid)
+        private void StartPlay1(int location, int trackid)
         {
-
-            if (waveOut != null)
-            {
-                waveOut.Dispose();
-            }
+            //if (waveOut1 != null)
+            //{
+            //    waveOut1.Dispose();
+            //}
             Catalog();
-            waveOut = new WaveOutEvent();
-            waveOut.DeviceNumber = location;
+            waveOut1 = new WaveOutEvent();
+            waveOut1.DeviceNumber = location;
             //int r = rnd.Next(list.Count);
-            var mp3Reader = new Mp3FileReader(list[trackid-1]);
-            waveOut.Init(mp3Reader);
+            var mp3Reader1 = new Mp3FileReader(list[trackid-1]);
+            waveOut1.Init(mp3Reader1);
             // }
-            waveOut.Play();
+            waveOut1.Play();
+        }
+
+        [HttpGet]
+        private void StartPlay2(int location, int trackid)
+        {
+            //if (waveOut2 != null)
+            //{
+            //    waveOut2.Dispose();
+            //}
+            Catalog();
+            waveOut2 = new WaveOutEvent();
+            waveOut2.DeviceNumber = location;
+            //int r = rnd.Next(list.Count);
+            var mp3Reader2 = new Mp3FileReader(list[trackid - 1]);
+            waveOut2.Init(mp3Reader2);
+            // }
+            waveOut2.Play();
         }
 
     }
