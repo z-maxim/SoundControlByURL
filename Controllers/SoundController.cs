@@ -26,21 +26,42 @@ namespace WebApplication.Controllers
 
         //Запускает отдельный поток для каждого WaveOutEvent
         [HttpGet]
-        public void Play(int id, int trackid)
+        public void Play(string id, int trackid)
         {
+            List<string> deviceNames = new List<string>();
+            int location;
+            //Считываем третью строчку из файла конфигурации с количеством устройств вывода
+            int numberOfDevices = Convert.ToInt32(File.ReadLines(AppDomain.CurrentDomain.BaseDirectory + "conf.txt")
+                                  .ElementAtOrDefault(2));
+            //Считываем следующие N названий устройств вывода
+            for (int i = 0; i < numberOfDevices; i++)
+            {
+                deviceNames.Add(File.ReadLines(AppDomain.CurrentDomain.BaseDirectory + "conf.txt")
+                                .ElementAtOrDefault(3 + i)
+                                .ToLower());
+            }
+            //Если входной параметр ID не приводится к целочисленному типу, ищем его в коллекции
+            //Номер выхода - индекс элемента в коллекции
+            if (!(Int32.TryParse(id, out location)))
+            {
+                if (deviceNames.Contains(id.ToLower())) { location = deviceNames.IndexOf(id.ToLower()); }
+            }
+            //Если массива, хранящего WaveoutEvent-ы еще не существует (первый запуск), создаем его
             if (waveOut == null)
             {
-                waveOut = new WaveOutEvent[2];
+                waveOut = new WaveOutEvent[numberOfDevices];
             }
+            //То же самое с потоками
             if (t == null)
             { 
-                t = new Thread[2];
-                for (int i = 0; i < waveOut.Length; i++)
+                t = new Thread[numberOfDevices];
+                for (int i = 0; i < numberOfDevices; i++)
                 {
-                    t[i] = new Thread(() => StartPlay1(id, trackid));
+                    t[i] = new Thread(() => StartPlay1(location, trackid));
                 }
             }
-            t[id].Start();
+            //Запускаем поток
+            t[location].Start();
         }
 
 

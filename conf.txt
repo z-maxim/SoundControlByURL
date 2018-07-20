@@ -1,1 +1,6 @@
 C://media
+D://log
+3
+Kitchen
+Room1
+Room2
