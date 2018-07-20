@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Player</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<div class="two"><h1>PLAYER</h1></div>
+<body>
+    <div>
+        <h2>Choose output</h2>
+        <select id="SoundDevice">
+            <option value='0'>Computer</option>
+            <option value='1'>First USB</option>
+            <option value='2'>Second USB</option>
+        </select>
+        <h2>Choose track</h2>
+        <select id="Tracklist"></select>
+        <br><br>
+        <input class="a" type="button" value="Play" onclick="play();" />
+        <input class="a" type="button" value="Stop" onclick="stop();" />
+    </div>
+
+    <div>
+        <h2>Or type URL</h2>
+        http://localhost/WebApplication/api/sound/play/0/(track number) - computer<br>
+        http://localhost/WebApplication/api/sound/play/1/(track number) - first usb<br>
+        http://localhost/WebApplication/api/sound/play/2/(track number) - second usb <br>
+        http://localhost/WebApplication/api/sound/stop
+        <div />
+        <div>
+            <h2>All tracks</h2>
+            <ul class="border" id="tracks" />
+        </div>
+        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+        <script>
+            var trackid = '1';
+            var deviceid = '0';
+            var uri = 'api/sound/GetAllTracks';
+            var url = 'api/sound/GetTrack';
+            var urlStop = 'api/sound/stop';
+            var urlPlay = 'api/sound/play/0/1';
+            $(document).ready(function () {
+                $.getJSON(uri)
+                    .done(function (data) {
+                        $("#SoundDevice").change(function () {
+                            urlPlay = 'api/sound/play/' + $(this).val() + '/' + trackid;
+                            deviceid = $(this).val();
+                            console.dir("device " + deviceid);
+                        });
+
+                        $("#Tracklist").change(function () {
+                            urlPlay = 'api/sound/play/' + deviceid + '/' + $(this).val();
+                            trackid = $(this).val();
+                            console.dir("track " + trackid);
+                        });
+
+
+                        $.each(data, function (key, item) {
+                            $('<li>', { text: formatItem(item) }).appendTo($('#tracks'));
+                            $('<option value=' + (key + 1) + '>' + formatItem(item) + '</option>').appendTo($('#Tracklist'));
+                            $('<p>', { class: 'my_content_container', track: key, id: 'track' }).appendTo($('#tracks'));
+                        });
+
+                    });
+            });
+
+            function formatItem(item) {
+                return item.Id + ': ' + item.Name;
+            }
+
+            function play() {
+                $.getJSON(urlPlay)
+
+            }
+
+            function stop() {
+                $.getJSON(urlStop)
+
+            }
+
+
+        </script>
+</body>
+</html>

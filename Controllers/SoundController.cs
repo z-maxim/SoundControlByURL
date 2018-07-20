@@ -36,7 +36,7 @@ namespace WebApplication.Controllers
             {
                 string xmessage = "Device not found";
                 int xcode = 701;
-                string xtype = "exeption";
+                string xtype = "exсeption";
                 Log(xmessage, xcode, xtype);
             }
         }
@@ -68,11 +68,11 @@ namespace WebApplication.Controllers
             {
                 string message = "Directory not found";
                 int code = 700;
-                string type = "exeption";
+                string type = "exсeption";
                 Log(message, code, type);
                 //обработка исключения, когда указан несуществующий путь к трекам
             }
-            
+
         }
 
         public void Log(string message, int code, string type)
@@ -81,8 +81,8 @@ namespace WebApplication.Controllers
             //считываем директорию для лога из конфига
             System.IO.File.AppendAllText(logpath +
             DateTime.Now.ToString("yyyyMMdd") + ".log",
-            "{\r\n"+ "  " +"\"date\": \""+ DateTime.Now.ToString("dd.MM.yyyy") + "\", " +
-            "\r\n" + "  " + "\"time\": \"" + DateTime.Now.ToString("hh:mm") + "\", " +
+            "{\r\n" + "  " + "\"date\": \"" + DateTime.Now.ToString("dd.MM.yyyy") + "\", " +
+            "\r\n" + "  " + "\"time\": \"" + DateTime.Now.ToString("HH:mm:ss") + "\", " +
             "\r\n" + "  " + "\"code\": \"" + code + "\", " +
             "\r\n" + "  " + "\"type\": \"" + type + "\", " +
             "\r\n" + "  " + "\"description\": \"" + message + "\"\r\n}\r\n");
@@ -100,13 +100,13 @@ namespace WebApplication.Controllers
         [HttpGet]
         private void StartPlay(int location, int trackid)
         {
-                if (waveOut != null)//waveOut.PlaybackState == PlaybackState.Playing
-                {
-                    waveOut.Dispose();
-                }
-                Catalog();
-                waveOut = new WaveOutEvent();
-                waveOut.DeviceNumber = location;
+            if (waveOut != null)//waveOut.PlaybackState == PlaybackState.Playing
+            {
+                waveOut.Dispose();
+            }
+            Catalog();
+            waveOut = new WaveOutEvent();
+            waveOut.DeviceNumber = location;
             //int r = rnd.Next(list.Count);
             try
             {
@@ -118,7 +118,8 @@ namespace WebApplication.Controllers
                 string type = "event";
                 Log(message, code, type);
             }
-            catch {
+            catch
+            {
                 string wmessage = "Incorrect file format";
                 int wcode = 400;
                 string wtype = "warning";
