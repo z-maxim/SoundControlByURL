@@ -30,9 +30,9 @@
     <div>
         <h2>Choose output</h2>
         <select id="SoundDevice">
-            <option value='0'>Computer</option>
-            <option value='1'>First USB</option>
-            <option value='2'>Second USB</option>
+            <option value='0'>Output 0</option>
+            <option value='1'>Output 1</option>
+            <option value='2'>Output 2</option>
         </select>
     </div>
 
@@ -65,13 +65,15 @@
         var deviceid = '0';
         var uri = 'api/sound/GetAllTracks';
         var url = 'api/sound/GetTrack';
-        var urlStop = 'api/sound/stop';
+        var urlStop = 'api/sound/stop/0';
+        //var urlStop = 'api/sound/stop';
         var urlPlay = 'api/sound/play/0/1';
         $(document).ready(function () {
             $.getJSON(uri)
                 .done(function (data) {
                     $("#SoundDevice").change(function () {
                         urlPlay = 'api/sound/play/' + $(this).val() + '/' + trackid;
+                        urlStop = 'api/sound/stop/' + $(this).val();
                         deviceid = $(this).val();
                         console.dir("device " + deviceid);
                     });
