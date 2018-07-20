@@ -26,7 +26,7 @@ namespace WebApplication.Controllers
 
         //Запускает отдельный поток для каждого WaveOutEvent
         [HttpGet]
-        public void Play(string id, int trackid)
+        public void Play(string id, int? trackid)
         {
             List<string> deviceNames = new List<string>();
             int location;
@@ -51,13 +51,14 @@ namespace WebApplication.Controllers
             {
                 waveOut = new WaveOutEvent[numberOfDevices];
             }
+
             //То же самое с потоками
             if (t == null)
             { 
                 t = new Thread[numberOfDevices];
                 for (int i = 0; i < numberOfDevices; i++)
                 {
-                    t[i] = new Thread(() => StartPlay1(location, trackid));
+                    t[i] = new Thread(() => StartPlay1(location, trackid ?? -1));
                 }
             }
             //Запускаем поток
@@ -115,17 +116,22 @@ namespace WebApplication.Controllers
         [HttpGet]
         private void StartPlay1(int location, int trackid)
         {
+            //Если в данном потоке что-то воспроизводится, останавливаем воспроизведение
             if (waveOut[location] != null)
             {
                 waveOut[location].Stop();
             }
+            //Получаем список треков
             Catalog();
             waveOut[location] = new WaveOutEvent();
             waveOut[location].DeviceNumber = location;
-            //int r = rnd.Next(list.Count);
+            //Если trackid равен -1, значит, он не был указан в URL => выбираем случайно
+            if (trackid == -1)
+            {
+                trackid = rnd.Next(list.Count);
+            }
             var mp3Reader1 = new Mp3FileReader(list[trackid-1]);
             waveOut[location].Init(mp3Reader1);
-            // }
             waveOut[location].Play();
         }
     }
