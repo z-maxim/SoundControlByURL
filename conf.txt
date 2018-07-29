@@ -1,5 +1,6 @@
 C://media
 D://log
+C://media/alerts/
 3
 Kitchen
 Room1

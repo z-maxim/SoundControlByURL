@@ -26,18 +26,18 @@ namespace WebApplication.Controllers
 
         //Запускает отдельный поток для каждого WaveOutEvent
         [HttpGet]
-        public void Play(string id, int? trackid)
+        public void Play(string id, string trackid)
         {
             List<string> deviceNames = new List<string>();
             int location;
-            //Считываем третью строчку из файла конфигурации с количеством устройств вывода
+            //Считываем четвертую строчку из файла конфигурации с количеством устройств вывода
             int numberOfDevices = Convert.ToInt32(File.ReadLines(AppDomain.CurrentDomain.BaseDirectory + "conf.txt")
-                                  .ElementAtOrDefault(2));
+                                  .ElementAtOrDefault(3));
             //Считываем следующие N названий устройств вывода
             for (int i = 0; i < numberOfDevices; i++)
             {
                 deviceNames.Add(File.ReadLines(AppDomain.CurrentDomain.BaseDirectory + "conf.txt")
-                                .ElementAtOrDefault(3 + i)
+                                .ElementAtOrDefault(4 + i)
                                 .ToLower());
             }
             //Если входной параметр ID не приводится к целочисленному типу, ищем его в коллекции
@@ -58,7 +58,7 @@ namespace WebApplication.Controllers
                 t = new Thread[numberOfDevices];
                 for (int i = 0; i < numberOfDevices; i++)
                 {
-                    t[i] = new Thread(() => StartPlay1(location, trackid ?? -1));
+                    t[i] = new Thread(() => StartPlay1(location, trackid));
                 }
             }
             //Запускаем поток
@@ -114,7 +114,7 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet]
-        private void StartPlay1(int location, int trackid)
+        private void StartPlay1(int location, string track)
         {
             //Если в данном потоке что-то воспроизводится, останавливаем воспроизведение
             if (waveOut[location] != null)
@@ -123,15 +123,34 @@ namespace WebApplication.Controllers
             }
             //Получаем список треков
             Catalog();
+            //Считываем путь к каталогу с звуками-событиями из файла конфигурации
+            string eventCatalogue = File.ReadLines(AppDomain.CurrentDomain.BaseDirectory + "conf.txt")
+                                    .ElementAtOrDefault(2);
             waveOut[location] = new WaveOutEvent();
             waveOut[location].DeviceNumber = location;
-            //Если trackid равен -1, значит, он не был указан в URL => выбираем случайно
-            if (trackid == -1)
+            Mp3FileReader mp3Reader;
+            //Если trackid не был указан в URL => выбираем случайно
+            switch (track)
             {
-                trackid = rnd.Next(list.Count);
+                case "":
+                    int trackid = rnd.Next(list.Count);
+                    mp3Reader = new Mp3FileReader(list[trackid - 1]);
+                    break;
+                case "alert":
+                    mp3Reader = new Mp3FileReader(eventCatalogue + "alert.wav");
+                    break;
+                case "error":
+                    mp3Reader = new Mp3FileReader(eventCatalogue + "alert.wav");
+                    break;
+                case "gas":
+                    mp3Reader = new Mp3FileReader(eventCatalogue + "gas.mp3");
+                    break;
+                default:
+                    trackid = Convert.ToInt32(track);
+                    mp3Reader = new Mp3FileReader(list[trackid - 1]);
+                    break;
             }
-            var mp3Reader1 = new Mp3FileReader(list[trackid-1]);
-            waveOut[location].Init(mp3Reader1);
+            waveOut[location].Init(mp3Reader);
             waveOut[location].Play();
         }
     }
