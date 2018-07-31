@@ -21,13 +21,12 @@ namespace WebApplication.Controllers
         public List<string> list;
         public List<Track> tracks = new List<Track>();
         private static Random rnd = new Random();
-        private string path = ConfigurationManager.AppSettings.Get("Path");
 
 
         [HttpGet]
         public void Play(int id, int trackid)
         {
-            if (id < WaveOut.DeviceCount && id >= -1)
+            if (id < WaveOut.DeviceCount && id >= -1)//проверяем номер введенного устройства
             {
                 var t = new Thread(() => StartPlay(id, trackid));
                 t.Start();
@@ -37,7 +36,7 @@ namespace WebApplication.Controllers
                 string xmessage = "Device not found";
                 int xcode = 701;
                 string xtype = "exсeption";
-                Log(xmessage, xcode, xtype);
+                Log(xmessage, xcode, xtype);//записываем сообщение в лог
             }
         }
 
@@ -52,10 +51,10 @@ namespace WebApplication.Controllers
         {
             String[] arr;
             list = new List<String>();
+            string path = File.ReadLines(AppDomain.CurrentDomain.BaseDirectory + "conf.txt").ElementAtOrDefault(0);
+            //считываем строку с директорией треков из конфига
             try
             {
-                string path = File.ReadLines(AppDomain.CurrentDomain.BaseDirectory + "conf.txt").ElementAtOrDefault(0);
-                //считываем строку с директорией треков из конфига
                 arr = Directory.GetFiles(path, "*.mp3");
                 for (int i = 0; i < arr.Length; i++)
                 {
@@ -66,7 +65,7 @@ namespace WebApplication.Controllers
             }
             catch
             {
-                string message = "Directory not found";
+                string message = "Directory " + path + " not found";
                 int code = 700;
                 string type = "exсeption";
                 Log(message, code, type);
@@ -81,12 +80,12 @@ namespace WebApplication.Controllers
             //считываем директорию для лога из конфига
             System.IO.File.AppendAllText(logpath +
             DateTime.Now.ToString("yyyyMMdd") + ".log",
-            "{\r\n" + "  " + "\"date\": \"" + DateTime.Now.ToString("dd.MM.yyyy") + "\", " +
-            "\r\n" + "  " + "\"time\": \"" + DateTime.Now.ToString("HH:mm:ss") + "\", " +
-            "\r\n" + "  " + "\"code\": \"" + code + "\", " +
-            "\r\n" + "  " + "\"type\": \"" + type + "\", " +
-            "\r\n" + "  " + "\"description\": \"" + message + "\"\r\n}\r\n");
-            //вывод в формате json
+            "{" + "  " + "\"date\": \"" + DateTime.Now.ToString("dd.MM.yyyy") + "\", " 
+            + "  " + "\"time\": \"" + DateTime.Now.ToString("HH:mm:ss") + "\", " +
+            "  " + "\"code\": \"" + code + "\", " +
+            "  " + "\"type\": \"" + type + "\", " +
+            "  " + "\"description\": \"" + message + "\"}\r\n");
+            //запись в формате json
         }
 
         public IEnumerable<Track> GetAllTracks()
@@ -108,7 +107,7 @@ namespace WebApplication.Controllers
             waveOut = new WaveOutEvent();
             waveOut.DeviceNumber = location;
             //int r = rnd.Next(list.Count);
-            try
+            try//отлавливаем ошибку с неправильным форматом файла
             {
                 var mp3Reader = new Mp3FileReader(list[trackid - 1]);
                 waveOut.Init(mp3Reader);
@@ -116,7 +115,7 @@ namespace WebApplication.Controllers
                 string message = "Track №" + trackid + " started on device №" + location;
                 int code = 100;
                 string type = "event";
-                Log(message, code, type);
+                Log(message, code, type);//записываем в лог сообщение о запуске файла
             }
             catch
             {
