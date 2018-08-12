@@ -1,7 +1,7 @@
 C://media
-D://log
+C://media/log/
 C://media/alerts/
 3
-Kitchen
-Room1
-Room2
+kitchen
+room1
+room2

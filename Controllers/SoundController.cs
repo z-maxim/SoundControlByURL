@@ -16,6 +16,7 @@ namespace WebApplication.Controllers
 {
     public class SoundController : ApiController
     {
+        public int numberOfDevices;
         public static WaveOutEvent[] waveOut;
         public Thread[] t;
         public List<string> list;
@@ -25,44 +26,85 @@ namespace WebApplication.Controllers
 
 
         //Запускает отдельный поток для каждого WaveOutEvent
+        //ID - номер устроиства в URL
+        //trackid - что воспроизводить (необязательный)
         [HttpGet]
         public void Play(string id, string trackid)
         {
-            List<string> deviceNames = new List<string>();
-            int location;
-            //Считываем четвертую строчку из файла конфигурации с количеством устройств вывода
-            int numberOfDevices = Convert.ToInt32(File.ReadLines(AppDomain.CurrentDomain.BaseDirectory + "conf.txt")
-                                  .ElementAtOrDefault(3));
-            //Считываем следующие N названий устройств вывода
-            for (int i = 0; i < numberOfDevices; i++)
+            try
             {
-                deviceNames.Add(File.ReadLines(AppDomain.CurrentDomain.BaseDirectory + "conf.txt")
-                                .ElementAtOrDefault(4 + i)
-                                .ToLower());
-            }
-            //Если входной параметр ID не приводится к целочисленному типу, ищем его в коллекции
-            //Номер выхода - индекс элемента в коллекции
-            if (!(Int32.TryParse(id, out location)))
-            {
-                if (deviceNames.Contains(id.ToLower())) { location = deviceNames.IndexOf(id.ToLower()); }
-            }
-            //Если массива, хранящего WaveoutEvent-ы еще не существует (первый запуск), создаем его
-            if (waveOut == null)
-            {
-                waveOut = new WaveOutEvent[numberOfDevices];
-            }
-
-            //То же самое с потоками
-            if (t == null)
-            { 
-                t = new Thread[numberOfDevices];
+                List<string> deviceNames = new List<string>();
+                int location;            //Считываем четвертую строчку из файла конфигурации с количеством устройств вывода
+                numberOfDevices = Convert.ToInt32(File.ReadLines(AppDomain.CurrentDomain.BaseDirectory + "conf.txt")
+                                      .ElementAtOrDefault(3));
+                //Считываем следующие N названий устройств вывода
+                 
                 for (int i = 0; i < numberOfDevices; i++)
                 {
-                    t[i] = new Thread(() => StartPlay1(location, trackid));
+                    deviceNames.Add(File.ReadLines(AppDomain.CurrentDomain.BaseDirectory + "conf.txt")
+                                    .ElementAtOrDefault(4 + i)
+                                    .ToLower());
+                }
+                //Если входной параметр ID не приводится к целочисленному типу, ищем его в коллекции и
+                //присваиваем индекс найденного ID переменной location (хранит deviceNumber)
+                if (!(Int32.TryParse(id, out location)))
+                {
+                    if (deviceNames.Contains(id.ToLower())) { location = deviceNames.IndexOf(id.ToLower()); }
+                }
+                //Если массива, хранящего WaveoutEvent-ы еще не существует (первый запуск), создаем его
+                if (waveOut == null)
+                {
+                    waveOut = new WaveOutEvent[numberOfDevices];
+                }
+
+                //То же самое с потоками
+                if (t == null)
+                {
+                    t = new Thread[numberOfDevices];
+                    for (int i = 0; i < numberOfDevices; i++)
+                    {
+                        t[i] = new Thread(() => StartPlay(location, trackid));
+                    }
+                }
+                //Запускаем поток
+                t[location].Start();
+            }
+            catch (IndexOutOfRangeException)
+            {
+                if (numberOfDevices == 0)
+                {
+                    string wmessage = "Неверно сконфигурировано количество выходов в файле конфигурации.";
+                    int wcode = 700;
+                    string wtype = "exception";
+                    Log(wmessage, wcode, wtype);
+                    throw;
+                }
+                else
+                {
+                    string wmessage = "Неверно указан DeviceNumber.";
+                    int wcode = 700;
+                    string wtype = "exception";
+                    Log(wmessage, wcode, wtype);
+                    throw;
                 }
             }
-            //Запускаем поток
-            t[location].Start();
+            catch (FormatException)
+            {
+                string wmessage = "Неверно указан DeviceNumber.";
+                int wcode = 700;
+                string wtype = "exception";
+                Log(wmessage, wcode, wtype);
+                throw;
+            }
+            catch (Exception)
+            {
+                string wmessage = "сосатб.";
+                int wcode = 700;
+                string wtype = "exception";
+                Log(wmessage, wcode, wtype);
+                throw;
+            }
+            
         }
 
 
@@ -79,16 +121,27 @@ namespace WebApplication.Controllers
         {
             String[] arr;
             list = new List<String>();
-            //открытие файла параметризации, считывание переменных, закрытие файла
-            StreamReader strRead = new StreamReader(AppDomain.CurrentDomain.BaseDirectory+"conf.txt");
-            path = strRead.ReadLine();
-            strRead.Close();
-            arr = Directory.GetFiles(path, "*.mp3");
-            for (int i = 0; i < arr.Length; i++)
+            string path = File.ReadLines(AppDomain.CurrentDomain.BaseDirectory + "conf.txt").ElementAtOrDefault(0);
+            //считываем строку с директорией треков из конфига
+            try
             {
-                list.Add(arr[i]);
-                tracks.Add(new Track() {Id = i+1, Name = arr[i] });
+                arr = Directory.GetFiles(path, "*.mp3");
+                for (int i = 0; i < arr.Length; i++)
+                {
+                    list.Add(arr[i]);
+                    tracks.Add(new Track() { Id = i + 1, Name = arr[i] });
+                }
+                //формируем каталог треков
             }
+            catch
+            {
+                string message = "Directory " + path + " not found";
+                int code = 700;
+                string type = "exсeption";
+                Log(message, code, type);
+                //обработка исключения, когда указан несуществующий путь к трекам
+            }
+
         }
 
         [HttpGet]
@@ -114,7 +167,7 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet]
-        private void StartPlay1(int location, string track)
+        private void StartPlay(int location, string track)
         {
             //Если в данном потоке что-то воспроизводится, останавливаем воспроизведение
             if (waveOut[location] != null)
@@ -130,11 +183,12 @@ namespace WebApplication.Controllers
             waveOut[location].DeviceNumber = location;
             Mp3FileReader mp3Reader;
             //Если trackid не был указан в URL => выбираем случайно
+            //Иначе музыкальный файл по номеру или алерт
             switch (track)
             {
-                case "":
+                case null:
                     int trackid = rnd.Next(list.Count);
-                    mp3Reader = new Mp3FileReader(list[trackid - 1]);
+                    mp3Reader = new Mp3FileReader(list[trackid]);
                     break;
                 case "alert":
                     mp3Reader = new Mp3FileReader(eventCatalogue + "alert.wav");
@@ -152,6 +206,20 @@ namespace WebApplication.Controllers
             }
             waveOut[location].Init(mp3Reader);
             waveOut[location].Play();
+        }
+
+        public void Log(string message, int code, string type)
+        {
+            string logpath = File.ReadLines(AppDomain.CurrentDomain.BaseDirectory + "conf.txt").ElementAtOrDefault(1);
+            //считываем директорию для лога из конфига
+            System.IO.File.AppendAllText(logpath +
+            DateTime.Now.ToString("yyyyMMdd") + ".log",
+            "{" + "  " + "\"date\": \"" + DateTime.Now.ToString("dd.MM.yyyy") + "\", "
+            + "  " + "\"time\": \"" + DateTime.Now.ToString("HH:mm:ss") + "\", " +
+            "  " + "\"code\": \"" + code + "\", " +
+            "  " + "\"type\": \"" + type + "\", " +
+            "  " + "\"description\": \"" + message + "\"}\r\n");
+            //запись в формате json
         }
     }
 }
