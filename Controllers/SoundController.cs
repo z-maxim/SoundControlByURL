@@ -33,12 +33,27 @@ namespace WebApplication.Controllers
         {
             try
             {
-                List<string> deviceNames = new List<string>();
-                int location;            //Считываем четвертую строчку из файла конфигурации с количеством устройств вывода
-                numberOfDevices = Convert.ToInt32(File.ReadLines(AppDomain.CurrentDomain.BaseDirectory + "conf.txt")
-                                      .ElementAtOrDefault(3));
+                List<string> deviceNames = new List<string>(); //список имен звуковых выходов (кухня, спальня и т.д.)
+                int location;
+                //Считываем четвертую строчку из файла конфигурации с количеством устройств вывода
+                try
+                {
+                    numberOfDevices = Convert.ToInt32(File.ReadLines(AppDomain.CurrentDomain.BaseDirectory + "conf.txt")
+                                          .ElementAtOrDefault(3));
+                }
+                #region exceptions
+                //Exception появляется, если в файле конфигурации вместо ожидаемого числа устроиств считывается строка
+                catch (FormatException)
+                {
+                    string wmessage = "Неверно сконфигурировано количество выходов в файле конфигурации.";
+                    int wcode = 400;
+                    string wtype = "error";
+                    Log(wmessage, wcode, wtype);
+                    //throw;
+                }
+                #endregion
                 //Считываем следующие N названий устройств вывода
-                 
+
                 for (int i = 0; i < numberOfDevices; i++)
                 {
                     deviceNames.Add(File.ReadLines(AppDomain.CurrentDomain.BaseDirectory + "conf.txt")
@@ -69,15 +84,17 @@ namespace WebApplication.Controllers
                 //Запускаем поток
                 t[location].Start();
             }
+            #region exceptions
             catch (IndexOutOfRangeException)
             {
+                //Если numberOfDevices равен нулю, то не удалось считать количество выходов из конфига, иначе неверный ввод
                 if (numberOfDevices == 0)
                 {
                     string wmessage = "Неверно сконфигурировано количество выходов в файле конфигурации.";
-                    int wcode = 700;
-                    string wtype = "exception";
+                    int wcode = 400;
+                    string wtype = "error";
                     Log(wmessage, wcode, wtype);
-                    throw;
+                    //throw;
                 }
                 else
                 {
@@ -85,26 +102,11 @@ namespace WebApplication.Controllers
                     int wcode = 700;
                     string wtype = "exception";
                     Log(wmessage, wcode, wtype);
-                    throw;
+                    //throw;
                 }
             }
-            catch (FormatException)
-            {
-                string wmessage = "Неверно указан DeviceNumber.";
-                int wcode = 700;
-                string wtype = "exception";
-                Log(wmessage, wcode, wtype);
-                throw;
-            }
-            catch (Exception)
-            {
-                string wmessage = "сосатб.";
-                int wcode = 700;
-                string wtype = "exception";
-                Log(wmessage, wcode, wtype);
-                throw;
-            }
-            
+            #endregion
+
         }
 
 
@@ -133,6 +135,7 @@ namespace WebApplication.Controllers
                 }
                 //формируем каталог треков
             }
+            #region exceptions
             catch
             {
                 string message = "Directory " + path + " not found";
@@ -141,6 +144,7 @@ namespace WebApplication.Controllers
                 Log(message, code, type);
                 //обработка исключения, когда указан несуществующий путь к трекам
             }
+            #endregion
 
         }
 
@@ -181,7 +185,7 @@ namespace WebApplication.Controllers
                                     .ElementAtOrDefault(2);
             waveOut[location] = new WaveOutEvent();
             waveOut[location].DeviceNumber = location;
-            Mp3FileReader mp3Reader;
+            Mp3FileReader mp3Reader = null;
             //Если trackid не был указан в URL => выбираем случайно
             //Иначе музыкальный файл по номеру или алерт
             switch (track)
@@ -200,12 +204,28 @@ namespace WebApplication.Controllers
                     mp3Reader = new Mp3FileReader(eventCatalogue + "gas.mp3");
                     break;
                 default:
+                    try
+                    { 
                     trackid = Convert.ToInt32(track);
                     mp3Reader = new Mp3FileReader(list[trackid - 1]);
+                    }
+                    #region exceptions
+                    catch (FormatException)
+                    {
+                        string wmessage = "Неверно указан номер трека.";
+                        int wcode = 700;
+                        string wtype = "exception";
+                        Log(wmessage, wcode, wtype);
+                        //throw;
+                    }
+                    #endregion
                     break;
             }
-            waveOut[location].Init(mp3Reader);
-            waveOut[location].Play();
+            if (mp3Reader != null)
+            {
+                waveOut[location].Init(mp3Reader);
+                waveOut[location].Play();
+            }
         }
 
         public void Log(string message, int code, string type)
