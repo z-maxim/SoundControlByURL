@@ -17,24 +17,30 @@ namespace WebApplication.Controllers
     public class SoundController : ApiController
     {
         public int numberOfDevices;
-        public static WaveOutEvent[] waveOut;
-        public Thread[] t;
+        public static WaveOutEvent[] waveOuts;
+        public static Mp3FileReader mp3Player;
+        public Thread[] threads;
         public List<string> list;
         public List<Track> tracks = new List<Track>();
         private static Random rnd = new Random();
-        private string path; //Директория со звуковыми файлами
+        //private string pathToFiles; //Директория со звуковыми файлами
 
 
         //Запускает отдельный поток для каждого WaveOutEvent
         //ID - номер устроиства в URL
         //trackid - что воспроизводить (необязательный)
         [HttpGet]
-        public void Play(string id, string trackid)
+        public void Play(string locationId, string trackId)
         {
             try
             {
-                List<string> deviceNames = new List<string>(); //список имен звуковых выходов (кухня, спальня и т.д.)
-                int location;
+                //список имен звуковых выходов (кухня, спальня и т.д.)
+                List<string> deviceNames = new List<string>();
+
+                //хранит нужный deviceNumber, в то время как во входной переменной locationId могут быть введены 
+                //названия комнат (kitchen, room1, etc.)
+                int deviceNumber; 
+                
                 //Считываем четвертую строчку из файла конфигурации с количеством устройств вывода
                 try
                 {
@@ -62,27 +68,34 @@ namespace WebApplication.Controllers
                 }
                 //Если входной параметр ID не приводится к целочисленному типу, ищем его в коллекции и
                 //присваиваем индекс найденного ID переменной location (хранит deviceNumber)
-                if (!(Int32.TryParse(id, out location)))
+                if (!(Int32.TryParse(locationId, out deviceNumber)))
                 {
-                    if (deviceNames.Contains(id.ToLower())) { location = deviceNames.IndexOf(id.ToLower()); }
+                    if (deviceNames.Contains(locationId.ToLower())) { deviceNumber = deviceNames.IndexOf(locationId.ToLower()); }
                 }
                 //Если массива, хранящего WaveoutEvent-ы еще не существует (первый запуск), создаем его
-                if (waveOut == null)
+                if (waveOuts == null)
                 {
-                    waveOut = new WaveOutEvent[numberOfDevices];
+                    waveOuts = new WaveOutEvent[numberOfDevices];
                 }
 
                 //То же самое с потоками
-                if (t == null)
+                if (threads == null)
                 {
-                    t = new Thread[numberOfDevices];
+                    threads = new Thread[numberOfDevices];
                     for (int i = 0; i < numberOfDevices; i++)
                     {
-                        t[i] = new Thread(() => StartPlay(location, trackid));
+                        threads[i] = new Thread(() => StartPlay(deviceNumber, trackId));
                     }
                 }
+
+                if (locationId == "all")
+                for (int i=0;i<numberOfDevices;i++)
+                {
+                        threads[i].Start();
+                }
+                else
                 //Запускаем поток
-                t[location].Start();
+                threads[deviceNumber].Start();
             }
             #region exceptions
             catch (IndexOutOfRangeException)
@@ -111,11 +124,11 @@ namespace WebApplication.Controllers
 
 
         [HttpGet]
-        public void Stop(int id)
+        public void Stop(int locationId)
         {
-            if (waveOut[id] != null && waveOut[id].PlaybackState == PlaybackState.Playing)
+            if (waveOuts[locationId] != null && waveOuts[locationId].PlaybackState == PlaybackState.Playing)
             {
-                waveOut[id].Stop();
+                waveOuts[locationId].Stop();
             }
         }
 
@@ -123,11 +136,11 @@ namespace WebApplication.Controllers
         {
             String[] arr;
             list = new List<String>();
-            string path = File.ReadLines(AppDomain.CurrentDomain.BaseDirectory + "conf.txt").ElementAtOrDefault(0);
+            string pathToFiles = File.ReadLines(AppDomain.CurrentDomain.BaseDirectory + "conf.txt").ElementAtOrDefault(0);
             //считываем строку с директорией треков из конфига
             try
             {
-                arr = Directory.GetFiles(path, "*.mp3");
+                arr = Directory.GetFiles(pathToFiles, "*.mp3");
                 for (int i = 0; i < arr.Length; i++)
                 {
                     list.Add(arr[i]);
@@ -138,7 +151,7 @@ namespace WebApplication.Controllers
             #region exceptions
             catch
             {
-                string message = "Directory " + path + " not found";
+                string message = "Directory " + pathToFiles + " not found";
                 int code = 700;
                 string type = "exсeption";
                 Log(message, code, type);
@@ -174,17 +187,17 @@ namespace WebApplication.Controllers
         private void StartPlay(int location, string track)
         {
             //Если в данном потоке что-то воспроизводится, останавливаем воспроизведение
-            if (waveOut[location] != null)
+            if (waveOuts[location] != null)
             {
-                waveOut[location].Stop();
+                waveOuts[location].Stop();
             }
             //Получаем список треков
             Catalog();
             //Считываем путь к каталогу с звуками-событиями из файла конфигурации
             string eventCatalogue = File.ReadLines(AppDomain.CurrentDomain.BaseDirectory + "conf.txt")
                                     .ElementAtOrDefault(2);
-            waveOut[location] = new WaveOutEvent();
-            waveOut[location].DeviceNumber = location;
+            waveOuts[location] = new WaveOutEvent();
+            waveOuts[location].DeviceNumber = location;
             Mp3FileReader mp3Reader = null;
             //Если trackid не был указан в URL => выбираем случайно
             //Иначе музыкальный файл по номеру или алерт
@@ -223,8 +236,8 @@ namespace WebApplication.Controllers
             }
             if (mp3Reader != null)
             {
-                waveOut[location].Init(mp3Reader);
-                waveOut[location].Play();
+                waveOuts[location].Init(mp3Reader);
+                waveOuts[location].Play();
             }
         }
 
