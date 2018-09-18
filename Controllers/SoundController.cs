@@ -10,15 +10,25 @@ using System.IO;
 using System.Configuration;
 using System.Collections.Specialized;
 using WebApplication.Models;
-
+using System.Threading.Tasks;
 
 namespace WebApplication.Controllers
 {
+
+    public class OnStoppedEventArgs
+    {
+        public WaveOutEvent WaveOutEvent { get; set; }
+        public Mp3FileReader Mp3FileReader { get; set; }
+    }
+
+    public delegate void EventHandler<StoppedEventArgs>(object sender, StoppedEventArgs e) 
+    where StoppedEventArgs : EventArgs;
+
     public class SoundController : ApiController
     {
         public int numberOfDevices;
         public static WaveOutEvent[] waveOuts;
-        public static Mp3FileReader mp3Player;
+        public static Mp3FileReader[] mp3Reader;
         public Thread[] threads;
         public List<string> list;
         public List<Track> tracks = new List<Track>();
@@ -89,13 +99,14 @@ namespace WebApplication.Controllers
                 }
 
                 if (locationId == "all")
-                for (int i=0;i<numberOfDevices;i++)
-                {
+                    Parallel.For(0, numberOfDevices, i =>
+                    {
                         threads[i].Start();
-                }
+                        Thread.Sleep(100);
+                    });
                 else
-                //Запускаем поток
-                threads[deviceNumber].Start();
+                    //Запускаем поток
+                    threads[deviceNumber].Start();
             }
             #region exceptions
             catch (IndexOutOfRangeException)
@@ -183,8 +194,8 @@ namespace WebApplication.Controllers
 
         }
 
-        [HttpGet]
-        private void StartPlay(int location, string track)
+
+        public void StartPlay(int location, string track)
         {
             //Если в данном потоке что-то воспроизводится, останавливаем воспроизведение
             if (waveOuts[location] != null)
@@ -198,29 +209,29 @@ namespace WebApplication.Controllers
                                     .ElementAtOrDefault(2);
             waveOuts[location] = new WaveOutEvent();
             waveOuts[location].DeviceNumber = location;
-            Mp3FileReader mp3Reader = null;
+            mp3Reader = new Mp3FileReader[numberOfDevices];
             //Если trackid не был указан в URL => выбираем случайно
             //Иначе музыкальный файл по номеру или алерт
             switch (track)
             {
                 case null:
                     int trackid = rnd.Next(list.Count);
-                    mp3Reader = new Mp3FileReader(list[trackid]);
+                    mp3Reader[location] = new Mp3FileReader(list[trackid]);
                     break;
                 case "alert":
-                    mp3Reader = new Mp3FileReader(eventCatalogue + "alert.wav");
+                    mp3Reader[location] = new Mp3FileReader(eventCatalogue + "alert.wav");
                     break;
                 case "error":
-                    mp3Reader = new Mp3FileReader(eventCatalogue + "alert.wav");
+                    mp3Reader[location] = new Mp3FileReader(eventCatalogue + "alert.wav");
                     break;
                 case "gas":
-                    mp3Reader = new Mp3FileReader(eventCatalogue + "gas.mp3");
+                    mp3Reader[location] = new Mp3FileReader(eventCatalogue + "gas.mp3");
                     break;
                 default:
                     try
                     { 
                     trackid = Convert.ToInt32(track);
-                    mp3Reader = new Mp3FileReader(list[trackid - 1]);
+                    mp3Reader[location] = new Mp3FileReader(list[trackid - 1]);
                     }
                     #region exceptions
                     catch (FormatException)
@@ -234,10 +245,22 @@ namespace WebApplication.Controllers
                     #endregion
                     break;
             }
-            if (mp3Reader != null)
+            if (mp3Reader[location] != null)
             {
-                waveOuts[location].Init(mp3Reader);
+                waveOuts[location].Init(mp3Reader[location]);
                 waveOuts[location].Play();
+                var disposer = new Disposer();
+                waveOuts[location].PlaybackStopped += disposer.OnPlaybackStopped;
+            }
+        }
+
+
+
+        public class Disposer
+        {
+            public void OnPlaybackStopped<StoppedEventArgs>(object sender, StoppedEventArgs e)
+            {
+                throw new NotImplementedException();
             }
         }
 
