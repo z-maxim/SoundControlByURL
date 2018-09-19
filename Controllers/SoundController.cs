@@ -15,9 +15,8 @@ using System.Threading.Tasks;
 namespace WebApplication.Controllers
 {
 
-    public class OnStoppedEventArgs
+    public class StoppedEventArgs
     {
-        public WaveOutEvent WaveOutEvent { get; set; }
         public Mp3FileReader Mp3FileReader { get; set; }
     }
 
@@ -249,8 +248,8 @@ namespace WebApplication.Controllers
             {
                 waveOuts[location].Init(mp3Reader[location]);
                 waveOuts[location].Play();
-                //var disposer = new Disposer();
-                //waveOuts[location].PlaybackStopped += disposer.OnPlaybackStopped;
+                waveOuts[location].PlaybackStopped += new Disposer(mp3Reader[location]).OnPlaybackStopped;
+                
             }
         }
 
@@ -258,9 +257,15 @@ namespace WebApplication.Controllers
 
         public class Disposer
         {
+            Mp3FileReader Mp3FileReader;
+
+            public Disposer(Mp3FileReader mp3FileReader) { Mp3FileReader = mp3FileReader; }
+
             public void OnPlaybackStopped<StoppedEventArgs>(object sender, StoppedEventArgs e)
             {
-                throw new NotImplementedException();
+                Mp3FileReader.Dispose();
+                (sender as WaveOutEvent).Dispose();
+
             }
         }
 
