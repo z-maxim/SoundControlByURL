@@ -249,8 +249,8 @@ namespace WebApplication.Controllers
             {
                 waveOuts[location].Init(mp3Reader[location]);
                 waveOuts[location].Play();
-                var disposer = new Disposer();
-                waveOuts[location].PlaybackStopped += disposer.OnPlaybackStopped;
+                //var disposer = new Disposer();
+                //waveOuts[location].PlaybackStopped += disposer.OnPlaybackStopped;
             }
         }
 
