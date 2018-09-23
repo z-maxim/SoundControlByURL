@@ -15,27 +15,19 @@ using System.Threading.Tasks;
 namespace WebApplication.Controllers
 {
 
-    public class StoppedEventArgs
-    {
-        public Mp3FileReader Mp3FileReader { get; set; }
-    }
-
-    public delegate void EventHandler<StoppedEventArgs>(object sender, StoppedEventArgs e) 
-    where StoppedEventArgs : EventArgs;
-
     public class SoundController : ApiController
     {
         public int numberOfDevices;
         public static WaveOutEvent[] waveOuts;
-        public static Mp3FileReader[] mp3Reader;
-        public Thread[] threads;
+        //public static Mp3FileReader[] mp3Reader;
+        //public Thread thread;
         public List<string> list;
         public List<Track> tracks = new List<Track>();
         private static Random rnd = new Random();
         //private string pathToFiles; //Директория со звуковыми файлами
 
 
-        //Запускает отдельный поток для каждого WaveOutEvent
+        //Запускает поток для каждого WaveOutEvent
         //ID - номер устроиства в URL
         //trackid - что воспроизводить (необязательный)
         [HttpGet]
@@ -48,8 +40,10 @@ namespace WebApplication.Controllers
 
                 //хранит нужный deviceNumber, в то время как во входной переменной locationId могут быть введены 
                 //названия комнат (kitchen, room1, etc.)
-                int deviceNumber; 
-                
+                int deviceNumber;
+
+
+                Thread thread = null;
                 //Считываем четвертую строчку из файла конфигурации с количеством устройств вывода
                 try
                 {
@@ -87,25 +81,18 @@ namespace WebApplication.Controllers
                     waveOuts = new WaveOutEvent[numberOfDevices];
                 }
 
-                //То же самое с потоками
-                if (threads == null)
-                {
-                    threads = new Thread[numberOfDevices];
-                    for (int i = 0; i < numberOfDevices; i++)
-                    {
-                        threads[i] = new Thread(() => StartPlay(deviceNumber, trackId));
-                    }
-                }
+                //Инициализируем поток
+                thread = new Thread(() => StartPlay(deviceNumber, trackId));
 
+                //Если location=all, рекурсивно запускаем функцию для всех устройств
                 if (locationId == "all")
-                    Parallel.For(0, numberOfDevices, i =>
+                for (int i = 0; i<numberOfDevices; i++)
                     {
-                        threads[i].Start();
-                        Thread.Sleep(100);
-                    });
+                        Play(i.ToString(), trackId);
+                    }
                 else
                     //Запускаем поток
-                    threads[deviceNumber].Start();
+                    thread.Start();
             }
             #region exceptions
             catch (IndexOutOfRangeException)
@@ -196,7 +183,7 @@ namespace WebApplication.Controllers
 
         public void StartPlay(int location, string track)
         {
-            //Если в данном потоке что-то воспроизводится, останавливаем воспроизведение
+            //Если на данном устройстве что-то воспроизводится, останавливаем воспроизведение
             if (waveOuts[location] != null)
             {
                 waveOuts[location].Stop();
@@ -208,29 +195,29 @@ namespace WebApplication.Controllers
                                     .ElementAtOrDefault(2);
             waveOuts[location] = new WaveOutEvent();
             waveOuts[location].DeviceNumber = location;
-            mp3Reader = new Mp3FileReader[numberOfDevices];
+            Mp3FileReader mp3Reader = null;
             //Если trackid не был указан в URL => выбираем случайно
             //Иначе музыкальный файл по номеру или алерт
             switch (track)
             {
                 case null:
                     int trackid = rnd.Next(list.Count);
-                    mp3Reader[location] = new Mp3FileReader(list[trackid]);
+                    mp3Reader = new Mp3FileReader(list[trackid]);
                     break;
                 case "alert":
-                    mp3Reader[location] = new Mp3FileReader(eventCatalogue + "alert.wav");
+                    mp3Reader = new Mp3FileReader(eventCatalogue + "alert.wav");
                     break;
                 case "error":
-                    mp3Reader[location] = new Mp3FileReader(eventCatalogue + "alert.wav");
+                    mp3Reader = new Mp3FileReader(eventCatalogue + "alert.wav");
                     break;
                 case "gas":
-                    mp3Reader[location] = new Mp3FileReader(eventCatalogue + "gas.mp3");
+                    mp3Reader = new Mp3FileReader(eventCatalogue + "gas.mp3");
                     break;
                 default:
                     try
                     { 
                     trackid = Convert.ToInt32(track);
-                    mp3Reader[location] = new Mp3FileReader(list[trackid - 1]);
+                    mp3Reader = new Mp3FileReader(list[trackid - 1]);
                     }
                     #region exceptions
                     catch (FormatException)
@@ -244,11 +231,11 @@ namespace WebApplication.Controllers
                     #endregion
                     break;
             }
-            if (mp3Reader[location] != null)
+            if (mp3Reader != null)
             {
-                waveOuts[location].Init(mp3Reader[location]);
+                waveOuts[location].Init(mp3Reader);
                 waveOuts[location].Play();
-                waveOuts[location].PlaybackStopped += new Disposer(mp3Reader[location]).OnPlaybackStopped;
+                waveOuts[location].PlaybackStopped += new Disposer(mp3Reader).OnPlaybackStopped;
                 
             }
         }
