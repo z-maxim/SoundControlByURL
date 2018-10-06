@@ -198,26 +198,50 @@ namespace WebApplication.Controllers
             Mp3FileReader mp3Reader = null;
             //Если trackid не был указан в URL => выбираем случайно
             //Иначе музыкальный файл по номеру или алерт
+            Dictionary<string, string> events = new Dictionary<string, string>();
+            StreamReader sr = new StreamReader(eventCatalogue + "conf.txt");
+            String line = sr.ReadLine();
+            while (line != null)
+            {
+                String[] elements = line.Split();
+                events.Add(elements[0], elements[1]);
+                line = sr.ReadLine();
+            }
+            sr.Close();
+            
+            
+
             switch (track)
             {
                 case null:
                     int trackid = rnd.Next(list.Count);
                     mp3Reader = new Mp3FileReader(list[trackid]);
                     break;
-                case "alert":
-                    mp3Reader = new Mp3FileReader(eventCatalogue + "alert.wav");
-                    break;
-                case "error":
-                    mp3Reader = new Mp3FileReader(eventCatalogue + "alert.wav");
-                    break;
-                case "gas":
-                    mp3Reader = new Mp3FileReader(eventCatalogue + "gas.mp3");
-                    break;
+                //case "alert":
+                //    mp3Reader = new Mp3FileReader(eventCatalogue + "alert.wav");
+                //    break;
+                //case "error":
+                //    mp3Reader = new Mp3FileReader(eventCatalogue + "alert.wav");
+                //    break;
+                //case "gas":
+                //    mp3Reader = new Mp3FileReader(eventCatalogue + "gas.mp3");
+                //    break;
                 default:
                     try
-                    { 
-                    trackid = Convert.ToInt32(track);
-                    mp3Reader = new Mp3FileReader(list[trackid - 1]);
+                    {
+                        foreach (KeyValuePair<string, string> entry in events)
+                        {
+                            if (entry.Key == track)
+                            {
+                                mp3Reader = new Mp3FileReader(eventCatalogue + entry.Value);
+                                break;
+                            }
+                        }
+                        if (mp3Reader == null)
+                        { 
+                        trackid = Convert.ToInt32(track);
+                        mp3Reader = new Mp3FileReader(list[trackid - 1]);
+                        }
                     }
                     #region exceptions
                     catch (FormatException)
@@ -241,7 +265,7 @@ namespace WebApplication.Controllers
         }
 
 
-
+        
         public class Disposer
         {
             Mp3FileReader Mp3FileReader;
