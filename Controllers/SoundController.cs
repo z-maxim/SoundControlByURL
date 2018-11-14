@@ -11,6 +11,7 @@ using System.Configuration;
 using System.Collections.Specialized;
 using WebApplication.Models;
 using System.Threading.Tasks;
+using System.Runtime.Serialization.Json;
 
 namespace WebApplication.Controllers
 {
@@ -81,8 +82,33 @@ namespace WebApplication.Controllers
                     waveOuts = new WaveOutEvent[numberOfDevices];
                 }
 
+                List<Device> devices = new List<Device>();
+                using (FileStream fs = new FileStream("C://Media//devices.json", FileMode.Open))
+                {
+                    DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(List<Device>));
+                    devices = (List<Device>)jsonFormatter.ReadObject(fs);
+                }
+
+                int selectedDevice = -1;
+                foreach (Device device in devices)
+                {
+                    if (device.Location == locationId)
+                    {
+                        for (int i = 0; i < WaveOut.DeviceCount; i++)
+                        {
+                            WaveOutCapabilities cap = WaveOut.GetCapabilities(i);
+                            if (cap.ManufacturerGuid.ToString() == device.ManufacturerGuid &&
+                                cap.NameGuid.ToString() == device.NameGuid &&
+                                cap.ProductGuid.ToString() == device.ProductGuid)
+                            {
+                                selectedDevice = i;
+                                break;
+                            }
+                        }
+                    }
+                }
                 //Инициализируем поток
-                thread = new Thread(() => StartPlay(deviceNumber, trackId));
+                thread = new Thread(() => StartPlay(selectedDevice, trackId));
 
                 //Если location=all, рекурсивно запускаем функцию для всех устройств
                 if (locationId == "all")
@@ -92,6 +118,11 @@ namespace WebApplication.Controllers
                     }
                 else
                     //Запускаем поток
+                    for (int i = -1; i < WaveOut.DeviceCount; i++)
+                    {
+                        var caps = WaveOut.GetCapabilities(i);
+                        Console.WriteLine($"{i}: { caps.ProductName }");
+                    }
                     thread.Start();
             }
             #region exceptions

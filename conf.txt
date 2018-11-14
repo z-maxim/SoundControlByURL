@@ -1,7 +1,8 @@
 C://media
 C://media/log/
 C://media/alerts/
-3
+4
 kitchen
 room1
 room2
+room3
