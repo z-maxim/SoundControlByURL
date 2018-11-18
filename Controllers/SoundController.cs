@@ -20,12 +20,11 @@ namespace WebApplication.Controllers
     {
         public int numberOfDevices;
         public static WaveOutEvent[] waveOuts;
-        //public static Mp3FileReader[] mp3Reader;
-        //public Thread thread;
         public List<string> list;
         public List<Track> tracks = new List<Track>();
         private static Random rnd = new Random();
-        //private string pathToFiles; //Директория со звуковыми файлами
+        private AppConfiguration config;
+        private const string CONFIG_PATH = "C://Media//AppConfiguration.json";
 
 
         //Запускает поток для каждого WaveOutEvent
@@ -36,20 +35,14 @@ namespace WebApplication.Controllers
         {
             try
             {
+                AppConfiguration config = GetConfig();
                 //список имен звуковых выходов (кухня, спальня и т.д.)
-                List<string> deviceNames = new List<string>();
+                List<string> deviceNames = config.RoomNames;
 
-                //хранит нужный deviceNumber, в то время как во входной переменной locationId могут быть введены 
-                //названия комнат (kitchen, room1, etc.)
-                int deviceNumber;
-
-
-                Thread thread = null;
-                //Считываем четвертую строчку из файла конфигурации с количеством устройств вывода
+                //Считаем количество именованных устроиств вывода в файле конфигурации
                 try
                 {
-                    numberOfDevices = Convert.ToInt32(File.ReadLines(AppDomain.CurrentDomain.BaseDirectory + "conf.txt")
-                                          .ElementAtOrDefault(3));
+                    numberOfDevices = config.RoomNames.Count();
                 }
                 #region exceptions
                 //Exception появляется, если в файле конфигурации вместо ожидаемого числа устроиств считывается строка
@@ -62,14 +55,14 @@ namespace WebApplication.Controllers
                     //throw;
                 }
                 #endregion
-                //Считываем следующие N названий устройств вывода
 
-                for (int i = 0; i < numberOfDevices; i++)
-                {
-                    deviceNames.Add(File.ReadLines(AppDomain.CurrentDomain.BaseDirectory + "conf.txt")
-                                    .ElementAtOrDefault(4 + i)
-                                    .ToLower());
-                }
+                //хранит нужный deviceNumber, в то время как во входной переменной locationId могут быть введены 
+                //названия комнат (kitchen, room1, etc.)
+                int deviceNumber;
+
+
+                Thread thread = null;
+
                 //Если входной параметр ID не приводится к целочисленному типу, ищем его в коллекции и
                 //присваиваем индекс найденного ID переменной location (хранит deviceNumber)
                 if (!(Int32.TryParse(locationId, out deviceNumber)))
@@ -118,11 +111,7 @@ namespace WebApplication.Controllers
                     }
                 else
                     //Запускаем поток
-                    for (int i = -1; i < WaveOut.DeviceCount; i++)
-                    {
-                        var caps = WaveOut.GetCapabilities(i);
-                        Console.WriteLine($"{i}: { caps.ProductName }");
-                    }
+
                     thread.Start();
             }
             #region exceptions
@@ -214,6 +203,8 @@ namespace WebApplication.Controllers
 
         public void StartPlay(int location, string track)
         {
+            config = GetConfig();
+
             //Если на данном устройстве что-то воспроизводится, останавливаем воспроизведение
             if (waveOuts[location] != null)
             {
@@ -222,25 +213,15 @@ namespace WebApplication.Controllers
             //Получаем список треков
             Catalog();
             //Считываем путь к каталогу с звуками-событиями из файла конфигурации
-            string eventCatalogue = File.ReadLines(AppDomain.CurrentDomain.BaseDirectory + "conf.txt")
-                                    .ElementAtOrDefault(2);
-            waveOuts[location] = new WaveOutEvent();
-            waveOuts[location].DeviceNumber = location;
+            string eventCatalogue = config.AlertPath;
+            waveOuts[location] = new WaveOutEvent
+            {
+                DeviceNumber = location
+            };
             Mp3FileReader mp3Reader = null;
             //Если trackid не был указан в URL => выбираем случайно
             //Иначе музыкальный файл по номеру или алерт
-            Dictionary<string, string> events = new Dictionary<string, string>();
-            StreamReader sr = new StreamReader(eventCatalogue + "conf.txt");
-            String line = sr.ReadLine();
-            while (line != null)
-            {
-                String[] elements = line.Split();
-                events.Add(elements[0], elements[1]);
-                line = sr.ReadLine();
-            }
-            sr.Close();
-            
-            
+            List<Alert> events = config.Alerts;           
 
             switch (track)
             {
@@ -248,23 +229,14 @@ namespace WebApplication.Controllers
                     int trackid = rnd.Next(list.Count);
                     mp3Reader = new Mp3FileReader(list[trackid]);
                     break;
-                //case "alert":
-                //    mp3Reader = new Mp3FileReader(eventCatalogue + "alert.wav");
-                //    break;
-                //case "error":
-                //    mp3Reader = new Mp3FileReader(eventCatalogue + "alert.wav");
-                //    break;
-                //case "gas":
-                //    mp3Reader = new Mp3FileReader(eventCatalogue + "gas.mp3");
-                //    break;
                 default:
                     try
                     {
-                        foreach (KeyValuePair<string, string> entry in events)
+                        foreach (Alert entry in config.Alerts)
                         {
-                            if (entry.Key == track)
+                            if (entry.Name == track)
                             {
-                                mp3Reader = new Mp3FileReader(eventCatalogue + entry.Value);
+                                mp3Reader = new Mp3FileReader(eventCatalogue + entry.FileName);
                                 break;
                             }
                         }
@@ -323,6 +295,15 @@ namespace WebApplication.Controllers
             "  " + "\"type\": \"" + type + "\", " +
             "  " + "\"description\": \"" + message + "\"}\r\n");
             //запись в формате json
+        }
+
+        public AppConfiguration GetConfig()
+        {
+            using (FileStream fs = new FileStream(CONFIG_PATH, FileMode.Open))
+            {
+                DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(AppConfiguration));
+                return (AppConfiguration)jsonFormatter.ReadObject(fs);
+            }
         }
     }
 }
