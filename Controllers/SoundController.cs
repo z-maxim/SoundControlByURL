@@ -38,6 +38,7 @@ namespace WebApplication.Controllers
                 AppConfiguration config = GetConfig();
                 //список имен звуковых выходов (кухня, спальня и т.д.)
                 List<string> deviceNames = config.RoomNames;
+                
 
                 //Считаем количество именованных устроиств вывода в файле конфигурации
                 try
@@ -92,7 +93,8 @@ namespace WebApplication.Controllers
                             WaveOutCapabilities cap = WaveOut.GetCapabilities(i);
                             if (cap.ManufacturerGuid.ToString() == device.ManufacturerGuid &&
                                 cap.NameGuid.ToString() == device.NameGuid &&
-                                cap.ProductGuid.ToString() == device.ProductGuid)
+                                cap.ProductGuid.ToString() == device.ProductGuid &&
+                                cap.ProductName.ToString() == device.ProductName)
                             {
                                 selectedDevice = i;
                                 break;
